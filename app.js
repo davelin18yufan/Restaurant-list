@@ -17,7 +17,7 @@ app.use(express.static("public"));
 
 //root route
 app.get("/", (req, res) => {
-  res.render("index")
+  res.render("index", { restaurant : restaurantList.results})
 })
 
 //activate and listen
