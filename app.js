@@ -31,8 +31,7 @@ app.get("/restaurants/:id", (req, res) => {
 // ? query
 app.get("/search", (req, res) => {
   const restaurantSearch = restaurantList.results.filter(item => item.name.toLowerCase().toString().includes(req.query.keyword.toLowerCase()));
-  console.log(restaurantSearch)
-  res.render("index", { restaurant: restaurantSearch })
+  res.render("index", { restaurant: restaurantSearch, keyword:req.query.keyword })
 })
 
 //activate and listen
