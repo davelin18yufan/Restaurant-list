@@ -17,7 +17,22 @@ app.use(express.static("public"));
 
 //root route
 app.get("/", (req, res) => {
-  res.render("index", { restaurant : restaurantList.results})
+  res.render("index", { restaurant: restaurantList.results })
+})
+
+//show route
+// : params
+app.get("/restaurants/:id", (req, res) => {
+  const restaurant = restaurantList.results.find(item => item.id === Number(req.params.id))
+  res.render("show", { restaurant });
+})
+
+//search route
+// ? query
+app.get("/search", (req, res) => {
+  const restaurantSearch = restaurantList.results.filter(item => item.name.toLowerCase().toString().includes(req.query.keyword.toLowerCase()));
+  console.log(restaurantSearch)
+  res.render("index", { restaurant: restaurantSearch })
 })
 
 //activate and listen
