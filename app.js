@@ -17,7 +17,7 @@ app.use(express.static("public"));
 
 //root route
 app.get("/", (req, res) => {
-  res.send("server activated succeed")
+  res.render("index")
 })
 
 //activate and listen
