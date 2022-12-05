@@ -1,9 +1,7 @@
 //include package we need
 const express = require("express");
 const exphbs = require("express-handlebars");
-
 const restaurantList = require("./restaurant.json")
-
 //define variables
 const port = 3000;
 const app = express();
@@ -31,7 +29,7 @@ app.get("/restaurants/:id", (req, res) => {
 // ? query
 app.get("/search", (req, res) => {
   const restaurantSearch = restaurantList.results.filter(item => item.name.toLowerCase().toString().includes(req.query.keyword.toLowerCase()) || item.category.toLowerCase().toString().includes(req.query.keyword));
-  res.render("index", { restaurant: restaurantSearch, keyword:req.query.keyword })
+   res.render("index", { restaurant: restaurantSearch, keyword:req.query.keyword })
 })
 
 //activate and listen
