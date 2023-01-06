@@ -1,5 +1,4 @@
 /node_modules
 .DS_Store
-/public/javascript/bootstrap.js.map
-/public/javascript/popper.js.map
-/public/stylesheet/bootstrap.css.map
+*.map
+.env
