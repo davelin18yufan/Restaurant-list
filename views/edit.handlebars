@@ -1,0 +1,42 @@
+<h1 class="mb-1 restaurant-show-title">{{ restaurant.name }}</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-10 mx-auto" >
+      <form action="/restaurants/{{restaurant._id}}/edit" method="post" id="description" >
+        <div class="mb-1">
+          <span class="text-secondary">
+            <i class="fas fa-utensils pr-2"></i>
+            類別：
+          </span>
+          <input type="text" name="category" placeholder="category.." value="{{restaurant.category}}" size="15">
+        </div>
+
+        <div class="mb-1">
+          <span class="text-secondary">
+            <i class="fas fa-map-marker-alt pr-2"></i>
+            地址：
+          </span>
+          <input type="text" name="location" placeholder="location.." value="{{restaurant.location}}" size="40">
+          <input type="text" name="google_map" placeholder="google_map link here.." value="{{restaurant.google_map}}" size="30">
+        </div>
+
+        <div class="mb-1">
+          <span class="text-secondary">
+            <i class="fas fa-mobile-alt pr-2"></i>
+            電話：
+          </span>
+          <input type="text" name="phone" placeholder="phone number.." value="{{restaurant.phone}}" size="15">
+        </div>
+        <button type="submit" class="btn btn-primary fixed-bottom" >確認</button>  
+      </form>
+        <div class="d-inline-block mx-1">
+          <p>簡介：</p>
+          <textarea type="text" name="description" placeholder="restaurant description.." form="description" cols="50" rows="4">{{restaurant.description}} </textarea>
+        </div>
+
+        <img class="rounded  d-block mb-7 " src="{{restaurant.image}}" alt="{{restaurant.name}}"
+          style="max-width: 600px;">
+      
+    </div>
+  </div>
+</div>

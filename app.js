@@ -2,6 +2,7 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
 const mongoose = require("mongoose")
+const bodyParser = require("body-parser")
 // const restaurantList = require("./restaurant.json")
 
 const Restaurants = require("./models/schema.js")
@@ -20,6 +21,7 @@ app.set("view engine", "handlebars");
 
 //static file
 app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: true }))
 
 //mongoose
 mongoose.set('strictQuery', false);
@@ -39,20 +41,31 @@ app.get("/", (req, res) => {
   return Restaurants.find()
     .lean()
     .then(restaurant => {
-      return res.render("index", { restaurant })
+      res.render("index", { restaurant })
     })
     .catch(error => console.log(error))
   // res.render("index", { restaurant: restaurantList.results })
 })
 
-//show route
+//new route
+app.get("/restaurants/new", (req, res) => {
+  res.render("new")
+})
+
+app.post("/restaurants", (req, res) => {
+  return Restaurants.create(req.body)
+    .then(() => res.redirect("/"))
+    .catch(error => console.log(error))
+})
+
+//detail route
 // : params
 app.get("/restaurants/:id", (req, res) => {
   const id = req.params.id
-  return Restaurants.find({id: id})
+  return Restaurants.findById(id)
     .lean()
     .then(restaurant => {
-      return res.render("show", { restaurant: restaurant[0] })
+      return res.render("show", { restaurant })
     })
     .catch(error => console.log(error))
 
@@ -68,14 +81,51 @@ app.get("/search", (req, res) => {
   return Restaurants.find()
     .lean()
     .then(restaurant => {
-      const restaurantSearch = 
+      const restaurantSearch =
         restaurant.filter(item => item.name.toLowerCase().toString().includes(searchValue.toLowerCase()) || item.category.toLowerCase().toString().includes(searchValue.toLowerCase()));
       return restaurantSearch
     })
     .then(restaurant => res.render("index", { restaurant }))
     .catch(error => console.log(error))
-   
+
   // res.render("index", { restaurant: restaurantSearch, keyword: req.query.keyword })
+})
+
+//edit route
+app.get("/restaurants/:id/edit", (req, res) => {
+  const id = req.params.id
+  return Restaurants.findById(id)
+    .lean()
+    .then(restaurant =>
+      res.render("edit", { restaurant }))
+    .catch(error => console.log(error))
+})
+
+app.post("/restaurants/:id/edit", (req, res) => {
+  const id = req.params.id
+  return Restaurants.findByIdAndUpdate(id, req.body)
+
+    // return Restaurants.findById(id)
+    //.then(restaurant => {  
+    // restaurant.category = req.body.category
+    // restaurant.location = req.body.location
+    // restaurant.google_map = req.body.google_map
+    // restaurant.phone = req.body.phone
+    // restaurant.description = req.body.description
+    // return restaurant.save()
+    //   })
+    .then(() => res.redirect(`/restaurants/${id}`))
+    .catch(error => console.log(error))
+
+})
+
+//remove route
+app.post("/restaurants/:id/delete", (req, res) => {
+  const id = req.params.id
+  return Restaurants.findById(id)
+    .then(restaurant => restaurant.remove())
+    .then(() => res.redirect("/"))
+    .catch(error => console.log(error))
 })
 
 //activate and listen
